@@ -57,6 +57,7 @@ module timing_control(
     logic [1:0] q_step = 0;
     logic p_step = 0; 
     
+    assign phi2_out = phi2_in;
     assign q = q_step;
     assign p = p_step;
     assign fclk_out = fclk;

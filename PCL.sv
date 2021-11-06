@@ -55,20 +55,28 @@ module PCL(
     output logic [7:0] db_out,
     
     input logic [7:0] address_low_in,
-    output logic [7:0] address_low_out
+    output logic [7:0] address_low_out,
+    
+    input logic carry_done
     );
     
     logic [7:0] pc_low_byte;
     
     always_latch begin
+    
         if (instruction_decode_in)
             pc_low_byte <= db_in;
-        else if (increment_pc)
+            
+        else if (increment_pc) begin
             if (pc_low_byte == 8'hff)
                 carry_to_pch <= 1'b1;
             else 
                 carry_to_pch <= 1'b0;
             pc_low_byte <= pc_low_byte + 1;
+        end
+        
+        else if (carry_done)
+            carry_to_pch <= 1'b0;
 
     end
     

@@ -48,12 +48,15 @@
 
 
 module ALU(
-
+    input logic compute_step,
     input logic instruction_decode_in,
     input logic acc_to_alu_xfer,
     input logic addr_to_alu_xfer,
     input logic [7:0] db_in,
     output logic [7:0] db_out,
+    
+    input logic c_carry,
+    input logic d_decimal,
     
     input logic [7:0] address_in,
     output logic [7:0] address_out,

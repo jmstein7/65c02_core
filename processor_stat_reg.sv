@@ -50,6 +50,9 @@ module processor_stat_reg(
     input logic sob,
     input logic phi2,
     
+    output logic c_carry,
+    output logic d_decimal,
+    
     input logic [7:0] instruction_decode_in,
     output logic [7:0] instruction_decode_out,
     input logic [7:0] db_in,
@@ -62,7 +65,6 @@ module processor_stat_reg(
     logic [7:0] p_status_register;
     logic [7:0] reg_breakout;
     
-    assign reg_breakout = db_in;
     assign {n, v, X, b, d, i, z, c} = reg_breakout; 
     
     //assign p_status_register = {n,v,x,b,d,i,z,c};
@@ -76,6 +78,9 @@ module processor_stat_reg(
             p_status_register <= {n,1'b1,X,b,d,i,z,c};
     end
     
+    assign c_carry = c; 
+    assign d_decimal = d;
+    assign reg_breakout = p_status_register;
     assign db_out = p_status_register;
     assign instruction_decode_out = p_status_register;
     

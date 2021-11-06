@@ -52,7 +52,6 @@ module clocking_unit(
     output logic fclk //4x phi2
     );
     
-    logic locked;
     logic at_speed = 0; 
     logic [1:0] start_clock = 0;
     
@@ -81,7 +80,7 @@ module clocking_unit(
     .mem_clk(mem_clk),
     // Status and control signals
     .reset(reset), // input reset
-    .locked(locked),       // output locked
+    .locked(),       // output locked
    // Clock in ports
     .clk(clk));      // input clk
     

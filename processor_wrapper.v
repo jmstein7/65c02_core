@@ -6,7 +6,7 @@
 // Create Date: 10/30/2021 05:21:22 PM
 // Module Name: processor_wrapper
 // Project Name: JM65C02S 8-bit processor
-// Target Devices: Xilinx Artix-7 
+// Target Devices: Xilinx Artix-7, et al
 // Tool Versions: 
 // Description: Wrapper for JM65C02S Processor, akin to the
 //              Western Digital 65C02 Processor 

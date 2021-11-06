@@ -1,12 +1,12 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// 
+// Engineer: Jonathan Stein
 // 
 // Create Date: 10/30/2021 05:58:46 PM
 // Design Name: 
 // Module Name: JM65C02S
-// Project Name: A 65c02 compatible processor implementation
+// Project Name: A 65c02 ISA-compatible processor implementation
 // Revision: v1.0
 // Revision 0.01 - File Created
 // Additional Comments: Copyright (C) 2021 Jonathan Stein (New York, USA)
@@ -72,7 +72,10 @@ module JM65C02S(
     logic psr_xfer;
     logic [2:0] hmode_select;
     logic [2:0] lmode_select;
-    
+    logic c_carry;
+    logic d_decimal;
+    logic pc_carry_done;
+    logic compute_step;
     /*--------------------------*/
     /* MASTER ADDRESS BUS SETUP */
     /*--------------------------*/
@@ -239,7 +242,7 @@ module JM65C02S(
     .id_phi2_out(id_phi2_out),
     .id_rwb_out(id_rwb_out),
     .idl_clear(idl_clear),
-    
+    .compute_step(compute_step),
     .a_increment(a_increment),
     .a_decrement(a_decrement),
     .x_increment(x_increment),
@@ -344,11 +347,15 @@ instruction_register ir_unit(
     logic [7:0] alu_to_accumulator;
     
     ALU ALU_one(
-
+    
+    .compute_step(compute_step),
     .instruction_decode_in(id_to_alu),
     
     .db_in(dbus_to_alu),
     .db_out(alu_to_dbus),
+    
+    .c_carry(c_carry),
+    .d_decimal(d_decimal),
     
     .address_in(abus_to_alu),
     .address_out(alu_to_abus),
@@ -386,6 +393,8 @@ processor_stat_reg PSR_one(
     .sob(sob),
     .phi2(id_phi2_out),
     .id_flag(id_flag),
+    .c_carry(c_carry),
+    .d_decimal(d_decimal),
     .psr_xfer(psr_xfer),
     .instruction_decode_in(id_to_psr),
     .instruction_decode_out(psr_to_id),
@@ -407,7 +416,8 @@ PCL pcl_one(
     .db_in(dbus_to_pcl),
     .db_out(pcl_to_dbus),
     .address_low_in(abus_to_pcl),
-    .address_low_out(pcl_to_abus)
+    .address_low_out(pcl_to_abus),
+    .carry_done(pc_carry_done)
     );
 
 PCH pch_one(
@@ -417,7 +427,8 @@ PCH pch_one(
     .db_in(dbus_to_pch),
     .db_out(pch_to_dbus),
     .address_high_in(abus_to_pch),
-    .address_high_out(pch_to_abus)
+    .address_high_out(pch_to_abus),
+    .carry_done(pc_carry_done)
     );
     
     /*----------------------------*/
