@@ -56,7 +56,15 @@ module processor_stat_reg(
     input logic [7:0] instruction_decode_in,
     output logic [7:0] instruction_decode_out,
     input logic [7:0] db_in,
-    output logic [7:0] db_out
+    output logic [7:0] db_out,
+    
+    input logic psr_update_request,
+    output logic ack_update_request,
+    input logic n_result, 
+    input logic v_result,
+    input logic z_result, 
+    input logic c_result
+    
     );
     
     //negative, overflow, don't care, break, decimal,
@@ -74,6 +82,15 @@ module processor_stat_reg(
             p_status_register <= db_in;
         else if (psr_xfer)
             p_status_register <= instruction_decode_in;
+            
+        else if (psr_update_request) begin
+            p_status_register <= {n_result, v_result, X, b, d, i, z_result, c_result};
+            ack_update_request <= 1;
+        end
+        
+        else if (~psr_update_request)
+            ack_update_request <= 0;
+            
         if (sob && phi2)
             p_status_register <= {n,1'b1,X,b,d,i,z,c};
     end

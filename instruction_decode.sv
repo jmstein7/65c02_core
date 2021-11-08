@@ -97,7 +97,12 @@ module instruction_decode(
     
     input logic [7:0] processor_stat_in,
     output logic [7:0] processor_stat_out,
-    input logic [7:0] instruction_reg_in
+    input logic [7:0] instruction_reg_in,
+    
+    //ALU Operations
+    output logic swap_a_b,
+    output logic swap_b_c,
+    output logic [3:0] operation_select
     );
     
     /* Reset wires and regs */

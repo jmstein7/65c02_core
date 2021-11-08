@@ -76,6 +76,15 @@ module JM65C02S(
     logic d_decimal;
     logic pc_carry_done;
     logic compute_step;
+    logic psr_update_request;
+    logic ack_update_request;
+    logic n_result; 
+    logic v_result;
+    logic z_result;
+    logic c_result;
+    logic swap_a_b;
+    logic swap_b_c;
+    logic [3:0] operation_select;
     /*--------------------------*/
     /* MASTER ADDRESS BUS SETUP */
     /*--------------------------*/
@@ -277,7 +286,11 @@ module JM65C02S(
     
     .processor_stat_in(psr_to_id),
     .processor_stat_out(id_to_psr),
-    .instruction_reg_in(ir_to_id)
+    .instruction_reg_in(ir_to_id),
+    
+    .swap_b_c(swap_b_c),
+    .swap_a_b(swap_a_b),
+    .operation_select(operation_select)
     );
 
     /*-----------------------*/
@@ -349,6 +362,8 @@ instruction_register ir_unit(
     ALU ALU_one(
     
     .compute_step(compute_step),
+    .mem_clk(mem_clk),
+    .resb(int_resb_to_id),
     .instruction_decode_in(id_to_alu),
     
     .db_in(dbus_to_alu),
@@ -363,7 +378,19 @@ instruction_register ir_unit(
     .addr_to_alu_xfer(addr_to_alu_xfer),
     
     .accumulator_in(accumulator_to_alu),
-    .accumulator_out(alu_to_accumulator)
+    .accumulator_out(alu_to_accumulator),
+    
+    .psr_to_id(psr_to_id),
+    .psr_update_request(psr_update_request),
+    .ack_update_request(ack_update_request),
+    .n_result(n_result), 
+    .v_result(v_result),
+    .z_result(z_result), 
+    .c_result(c_result),
+    .swap_b_c(swap_b_c),
+    .swap_a_b(swap_a_b),
+    .operation_select(operation_select)
+    
     );
     /*------------------------------------*/
     /* Accumulator Register File          */
@@ -399,7 +426,13 @@ processor_stat_reg PSR_one(
     .instruction_decode_in(id_to_psr),
     .instruction_decode_out(psr_to_id),
     .db_in(dbus_to_psr),
-    .db_out(psr_to_dbus)
+    .db_out(psr_to_dbus),
+    .psr_update_request(psr_update_request),
+    .ack_update_request(ack_update_request),
+    .n_result(n_result), 
+    .v_result(v_result),
+    .z_result(z_result), 
+    .c_result(c_result)
     );
     /*--------------------------*/
     /* PCL and PCH              */
