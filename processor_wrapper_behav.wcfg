@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="processor_wrapper_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="processor_wrapper" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="153680724fs"></ZoomStartTime>
+      <ZoomEndTime time="154449725fs"></ZoomEndTime>
+      <Cursor1Time time="152395000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="248"></NameColumnWidth>
+      <ValueColumnWidth column_width="58"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="66" />
+   <wvobject fp_name="/processor_wrapper/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/reset" type="logic">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/clock_gen_one/phi1o" type="logic">
+      <obj_property name="ElementShortName">phi1o</obj_property>
+      <obj_property name="ObjectShortName">phi1o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/resb" type="logic">
+      <obj_property name="ElementShortName">resb</obj_property>
+      <obj_property name="ObjectShortName">resb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/irqb" type="logic">
+      <obj_property name="ElementShortName">irqb</obj_property>
+      <obj_property name="ObjectShortName">irqb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/nmib" type="logic">
+      <obj_property name="ElementShortName">nmib</obj_property>
+      <obj_property name="ObjectShortName">nmib</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/p" type="logic">
+      <obj_property name="ElementShortName">p</obj_property>
+      <obj_property name="ObjectShortName">p</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/q" type="array">
+      <obj_property name="ElementShortName">q[1:0]</obj_property>
+      <obj_property name="ObjectShortName">q[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/tc_unit/r" type="array">
+      <obj_property name="ElementShortName">r[3:0]</obj_property>
+      <obj_property name="ObjectShortName">r[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/fclk" type="logic">
+      <obj_property name="ElementShortName">fclk</obj_property>
+      <obj_property name="ObjectShortName">fclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/be" type="logic">
+      <obj_property name="ElementShortName">be</obj_property>
+      <obj_property name="ObjectShortName">be</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/increment_pc" type="logic">
+      <obj_property name="ElementShortName">increment_pc</obj_property>
+      <obj_property name="ObjectShortName">increment_pc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/push_vector" type="logic">
+      <obj_property name="ElementShortName">push_vector</obj_property>
+      <obj_property name="ObjectShortName">push_vector</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/push_resb" type="logic">
+      <obj_property name="ElementShortName">push_resb</obj_property>
+      <obj_property name="ObjectShortName">push_resb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/push_nmib" type="logic">
+      <obj_property name="ElementShortName">push_nmib</obj_property>
+      <obj_property name="ObjectShortName">push_nmib</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/push_irqb" type="logic">
+      <obj_property name="ElementShortName">push_irqb</obj_property>
+      <obj_property name="ObjectShortName">push_irqb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/reset_stack" type="logic">
+      <obj_property name="ElementShortName">reset_stack</obj_property>
+      <obj_property name="ObjectShortName">reset_stack</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/read" type="array">
+      <obj_property name="ElementShortName">read[3:0]</obj_property>
+      <obj_property name="ObjectShortName">read[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/write" type="array">
+      <obj_property name="ElementShortName">write[3:0]</obj_property>
+      <obj_property name="ObjectShortName">write[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/hmode_select" type="array">
+      <obj_property name="ElementShortName">hmode_select[2:0]</obj_property>
+      <obj_property name="ObjectShortName">hmode_select[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/lmode_select" type="array">
+      <obj_property name="ElementShortName">lmode_select[2:0]</obj_property>
+      <obj_property name="ObjectShortName">lmode_select[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/rdy" type="logic">
+      <obj_property name="ElementShortName">rdy</obj_property>
+      <obj_property name="ObjectShortName">rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/vpb" type="logic">
+      <obj_property name="ElementShortName">vpb</obj_property>
+      <obj_property name="ObjectShortName">vpb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/sync" type="logic">
+      <obj_property name="ElementShortName">sync</obj_property>
+      <obj_property name="ObjectShortName">sync</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/mlb" type="logic">
+      <obj_property name="ElementShortName">mlb</obj_property>
+      <obj_property name="ObjectShortName">mlb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/id_phi2_out" type="logic">
+      <obj_property name="ElementShortName">id_phi2_out</obj_property>
+      <obj_property name="ObjectShortName">id_phi2_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/id_rwb_out" type="logic">
+      <obj_property name="ElementShortName">id_rwb_out</obj_property>
+      <obj_property name="ObjectShortName">id_rwb_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/timing_control" type="logic">
+      <obj_property name="ElementShortName">timing_control</obj_property>
+      <obj_property name="ObjectShortName">timing_control</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/phi2" type="logic">
+      <obj_property name="ElementShortName">phi2</obj_property>
+      <obj_property name="ObjectShortName">phi2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/data_io_in" type="array">
+      <obj_property name="ElementShortName">data_io_in[7:0]</obj_property>
+      <obj_property name="ObjectShortName">data_io_in[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/ir_signal" type="logic">
+      <obj_property name="ElementShortName">ir_signal</obj_property>
+      <obj_property name="ObjectShortName">ir_signal</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/id_flag" type="logic">
+      <obj_property name="ElementShortName">id_flag</obj_property>
+      <obj_property name="ObjectShortName">id_flag</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/y" type="logic">
+      <obj_property name="ElementShortName">y</obj_property>
+      <obj_property name="ObjectShortName">y</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/x" type="logic">
+      <obj_property name="ElementShortName">x</obj_property>
+      <obj_property name="ObjectShortName">x</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/s" type="logic">
+      <obj_property name="ElementShortName">s</obj_property>
+      <obj_property name="ObjectShortName">s</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/alu" type="logic">
+      <obj_property name="ElementShortName">alu</obj_property>
+      <obj_property name="ObjectShortName">alu</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/accumulator" type="logic">
+      <obj_property name="ElementShortName">accumulator</obj_property>
+      <obj_property name="ObjectShortName">accumulator</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/pcl" type="logic">
+      <obj_property name="ElementShortName">pcl</obj_property>
+      <obj_property name="ObjectShortName">pcl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/pch" type="logic">
+      <obj_property name="ElementShortName">pch</obj_property>
+      <obj_property name="ObjectShortName">pch</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/input_DL" type="logic">
+      <obj_property name="ElementShortName">input_DL</obj_property>
+      <obj_property name="ObjectShortName">input_DL</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/data_bus_buffer" type="logic">
+      <obj_property name="ElementShortName">data_bus_buffer</obj_property>
+      <obj_property name="ObjectShortName">data_bus_buffer</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/a_increment" type="logic">
+      <obj_property name="ElementShortName">a_increment</obj_property>
+      <obj_property name="ObjectShortName">a_increment</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/a_decrement" type="logic">
+      <obj_property name="ElementShortName">a_decrement</obj_property>
+      <obj_property name="ObjectShortName">a_decrement</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/x_increment" type="logic">
+      <obj_property name="ElementShortName">x_increment</obj_property>
+      <obj_property name="ObjectShortName">x_increment</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/x_decrement" type="logic">
+      <obj_property name="ElementShortName">x_decrement</obj_property>
+      <obj_property name="ObjectShortName">x_decrement</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/y_increment" type="logic">
+      <obj_property name="ElementShortName">y_increment</obj_property>
+      <obj_property name="ObjectShortName">y_increment</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/y_decrement" type="logic">
+      <obj_property name="ElementShortName">y_decrement</obj_property>
+      <obj_property name="ObjectShortName">y_decrement</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/sp_increment" type="logic">
+      <obj_property name="ElementShortName">sp_increment</obj_property>
+      <obj_property name="ObjectShortName">sp_increment</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/sp_decrement" type="logic">
+      <obj_property name="ElementShortName">sp_decrement</obj_property>
+      <obj_property name="ObjectShortName">sp_decrement</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/alu_to_accumulator_xfer" type="logic">
+      <obj_property name="ElementShortName">alu_to_accumulator_xfer</obj_property>
+      <obj_property name="ObjectShortName">alu_to_accumulator_xfer</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/clock_running" type="logic">
+      <obj_property name="ElementShortName">clock_running</obj_property>
+      <obj_property name="ObjectShortName">clock_running</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/processor_stat_in" type="array">
+      <obj_property name="ElementShortName">processor_stat_in[7:0]</obj_property>
+      <obj_property name="ObjectShortName">processor_stat_in[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/processor_stat_out" type="array">
+      <obj_property name="ElementShortName">processor_stat_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">processor_stat_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/instruction_reg_in" type="array">
+      <obj_property name="ElementShortName">instruction_reg_in[7:0]</obj_property>
+      <obj_property name="ObjectShortName">instruction_reg_in[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/PSR_one/p_status_register" type="array">
+      <obj_property name="ElementShortName">p_status_register[7:0]</obj_property>
+      <obj_property name="ObjectShortName">p_status_register[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/ALU_one/c_carry" type="logic">
+      <obj_property name="ElementShortName">c_carry</obj_property>
+      <obj_property name="ObjectShortName">c_carry</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/PSR_one/id_flag" type="logic">
+      <obj_property name="ElementShortName">id_flag</obj_property>
+      <obj_property name="ObjectShortName">id_flag</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/PSR_one/psr_xfer" type="logic">
+      <obj_property name="ElementShortName">psr_xfer</obj_property>
+      <obj_property name="ObjectShortName">psr_xfer</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/PSR_one/sob" type="logic">
+      <obj_property name="ElementShortName">sob</obj_property>
+      <obj_property name="ObjectShortName">sob</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/PSR_one/phi2" type="logic">
+      <obj_property name="ElementShortName">phi2</obj_property>
+      <obj_property name="ObjectShortName">phi2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/PSR_one/c_carry" type="logic">
+      <obj_property name="ElementShortName">c_carry</obj_property>
+      <obj_property name="ObjectShortName">c_carry</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/PSR_one/d_decimal" type="logic">
+      <obj_property name="ElementShortName">d_decimal</obj_property>
+      <obj_property name="ObjectShortName">d_decimal</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/PSR_one/instruction_decode_in" type="array">
+      <obj_property name="ElementShortName">instruction_decode_in[7:0]</obj_property>
+      <obj_property name="ObjectShortName">instruction_decode_in[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/PSR_one/instruction_decode_out" type="array">
+      <obj_property name="ElementShortName">instruction_decode_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">instruction_decode_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/PSR_one/db_in" type="array">
+      <obj_property name="ElementShortName">db_in[7:0]</obj_property>
+      <obj_property name="ObjectShortName">db_in[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/PSR_one/db_out" type="array">
+      <obj_property name="ElementShortName">db_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">db_out[7:0]</obj_property>
+   </wvobject>
+</wave_config>

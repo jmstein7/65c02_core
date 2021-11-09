@@ -51,6 +51,9 @@ module PCL(
     input logic instruction_decode_in,
     input logic increment_pc,
     output logic carry_to_pch,
+    input logic push_resb,
+    input logic push_nmib,
+    input logic push_irqb,
     
     input logic [7:0] db_in,
     output logic [7:0] db_out,
@@ -67,7 +70,16 @@ module PCL(
     if (fclk) begin
         if (instruction_decode_in)
             pc_low_byte <= db_in;
+        
+        else if (push_resb)
+            pc_low_byte <= 8'hFC;
             
+        else if (push_irqb)
+            pc_low_byte <= 8'hFE;
+            
+        else if (push_nmib)
+            pc_low_byte <= 8'hFA;
+        
         else if (increment_pc) begin
             if (pc_low_byte == 8'hff)
                 carry_to_pch <= 1'b1;
@@ -81,7 +93,7 @@ module PCL(
     end
     end
     
-    assign address_out = pc_low_byte;
+    assign address_low_out = pc_low_byte;
     assign db_out = pc_low_byte;
     
 endmodule

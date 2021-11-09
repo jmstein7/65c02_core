@@ -103,17 +103,24 @@ module instruction_decode(
     //ALU Operations
     output logic swap_a_b,
     output logic swap_b_c,
-    output logic [3:0] operation_select
+    output logic [3:0] operation_select,
+    
+    //Vector Operations
+    output logic push_vector,   //push FF to PCH
+    output logic push_resb,     //push FC to PCL
+    output logic push_nmib,     //push FA to PCL
+    output logic push_irqb,     //push FE to PCL
+    output logic reset_stack    //push FF to sp
     );
     
     /* Reset wires and regs */
-    logic [1:0] reset_active;
-    logic [2:0] reset_seven;
-    logic begin_reset; /*  <= when this is equal to one, start reset sequence */
-    logic [7:0] instruction;
-    logic load_count;
     logic dbb; 
     logic fetch_byte, place_byte;
+    logic [4:0] vector_operations;
+    logic [4:0] start_reset = 5'b11000;
+    logic [4:0] start_nmib = 5'b10100;
+    logic [4:0] start_irqb = 5'b10010;
+    logic [4:0] start_stack = 5'b00001;
     
     /* Status Flags */
     logic [7:0] status_flags;
@@ -262,7 +269,7 @@ module instruction_decode(
         data_bus_buffer, psr_xfer, alu_to_accumulator_xfer, acc_to_alu_xfer,
         addr_to_alu_xfer} <= load_store_execute; //16-bits
                 
-        {swap_a_b, swap_b_c, operation_select} <= alu_operations_regs;
+        {swap_a_b, swap_b_c, operation_select} <= alu_operations_regs; //6-bits
     
         {increment_pc, a_increment, a_decrement, x_increment, x_decrement,
         y_increment, y_decrement, sp_increment, sp_decrement, 
@@ -270,53 +277,8 @@ module instruction_decode(
     
         processor_stat_out <= status_flags; //8-bits
         
+        {push_vector, push_resb, push_nmib, push_irqb, reset_stack} <= vector_operations; //5-bits
+        
     end
-    //////////////////////////////////////////////////////////////////////////////////
-    //          RESET COUNTS / two cycles down to start reset sequence
-    //////////////////////////////////////////////////////////////////////////////////
-    //Reset Logic and counters
-    
-    always @(negedge phi2) begin
-        if (~resb) begin
-            if ((reset_active == 2'b00)) begin
-                reset_active <= reset_active + 2'b01;
-                begin_reset <= 0; 
-                reset_seven <= 0;
-            end
-            else if (reset_active == 2'b01) begin
-                reset_active <= reset_active + 2'b01;
-            end
-            else if (reset_active == 2'b10) begin
-                reset_active <= 2'b10;
-            end
-            else if (reset_active == 2'b11) begin
-                reset_active <= 0;
-                begin_reset <= 0;
-                reset_seven <= 0;
-            end
-        end
-        else if (resb) begin
-            if ((reset_active == 2'b00) || (reset_active == 2'b01))
-                reset_active <= 0;  
-            else if (reset_active == 2'b10) begin
-                begin_reset <= 1;
-                reset_active <= reset_active + 2'b01;
-            end
-            else if (reset_active == 2'b11) begin
-                begin_reset <= 0;
-                reset_active <= 0;
-            end
-            //count seven cycles
-            if (reset_seven == 0 && ~begin_reset)
-                reset_seven <= 0;
-            else if (reset_seven == 0 && begin_reset)
-                reset_seven <= reset_seven + 3'b001;
-            else if (reset_seven > 0 && resb)
-                reset_seven <= reset_seven + 3'b001;
-        end
-    end
-    /* END OF RESET COUNTERS */
-    //////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////
-    
+       
 endmodule

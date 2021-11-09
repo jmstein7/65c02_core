@@ -90,6 +90,11 @@ module JM65C02S(
     logic fclk;
     logic sfclk;
     logic [1:0] q;
+    logic push_vector;
+    logic push_resb;
+    logic push_nmib;
+    logic push_irqb;
+    logic reset_stack;
     /*--------------------------*/
     /* MASTER ADDRESS BUS SETUP */
     /*--------------------------*/
@@ -297,7 +302,13 @@ module JM65C02S(
     
     .swap_b_c(swap_b_c),
     .swap_a_b(swap_a_b),
-    .operation_select(operation_select)
+    .operation_select(operation_select),
+    
+    .push_vector(push_vector),
+    .push_resb(push_resb),
+    .push_nmib(push_nmib),
+    .push_irqb(push_irqb),
+    .reset_stack(reset_stack)
     );
 
     /*-----------------------*/
@@ -355,6 +366,7 @@ timing_control tc_unit(
     //Internal Signals
     
 instruction_register ir_unit(
+    .fclk(fclk),
     .ir_signal(ir_signal),
     .instruction_decode_out(ir_to_id),
     .data_in(data_io_in),
@@ -463,7 +475,10 @@ PCL pcl_one(
     .db_out(pcl_to_dbus),
     .address_low_in(abus_to_pcl),
     .address_low_out(pcl_to_abus),
-    .carry_done(pc_carry_done)
+    .carry_done(pc_carry_done),
+    .push_resb(push_resb),
+    .push_nmib(push_nmib),
+    .push_irqb(push_irqb)
     );
 
 PCH pch_one(
@@ -471,6 +486,7 @@ PCH pch_one(
     .fclk(fclk),
     .instruction_decode_in(id_to_pch),
     .carry_to_pch(carry_to_pch),
+    .push_vector(push_vector),
     .db_in(dbus_to_pch),
     .db_out(pch_to_dbus),
     .address_high_in(abus_to_pch),
@@ -565,7 +581,8 @@ stack_point_register stack_pointer(
     .db_out(sp_to_dbus),
     .address_out(sp_to_abus),
     .sp_increment(sp_increment),
-    .sp_decrement(sp_decrement)
+    .sp_decrement(sp_decrement),
+    .reset_stack(reset_stack)
     );
     
 endmodule

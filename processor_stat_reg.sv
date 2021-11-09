@@ -79,9 +79,15 @@ module processor_stat_reg(
     //assign p_status_register = {n,v,x,b,d,i,z,c};
     
     always_latch begin
+    
+    if (sob && ~fclk)
+            p_status_register <= {n,1'b1,X,b,d,i,z,c};
+            
     if (fclk) begin
+            
         if (id_flag)
             p_status_register <= db_in;
+            
         else if (psr_xfer)
             p_status_register <= instruction_decode_in;
             
@@ -93,9 +99,8 @@ module processor_stat_reg(
         else if (~psr_update_request)
             ack_update_request <= 0;
             
-        if (sob && phi2)
-            p_status_register <= {n,1'b1,X,b,d,i,z,c};
     end
+    
     end
     
     assign c_carry = c; 

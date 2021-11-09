@@ -53,7 +53,8 @@ module stack_point_register(
     output logic [7:0] address_out,
     
     input logic sp_increment,
-    input logic sp_decrement
+    input logic sp_decrement,
+    input logic reset_stack
     );
     
     logic [7:0] stack_pointer;
@@ -62,6 +63,8 @@ module stack_point_register(
     if (fclk) begin
         if (instruction_decode_in)
             stack_pointer <= db_in;
+        else if (reset_stack)
+            stack_pointer <= 8'hFF;
         else if (sp_increment)
             stack_pointer <= stack_pointer + 1;
         else if (sp_decrement)

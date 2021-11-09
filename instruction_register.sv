@@ -42,6 +42,7 @@
 
 
 module instruction_register(
+    input logic fclk,
     input logic ir_signal, //signal from decoder
     output logic  [7:0] instruction_decode_out,
     input logic  [7:0] data_in,
@@ -51,8 +52,10 @@ module instruction_register(
     logic [7:0] instruction_register;
     
     always_latch begin
+    if (fclk) begin
         if (ir_signal)
             instruction_register <= data_in;
+    end
     end
     
     assign instruction_decode_out = instruction_register;

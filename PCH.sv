@@ -50,6 +50,7 @@ module PCH(
     input logic fclk,
     input logic instruction_decode_in,
     input logic carry_to_pch,
+    input logic push_vector,
     
     input logic [7:0] db_in,
     output logic [7:0] db_out,
@@ -67,6 +68,8 @@ module PCH(
     if (fclk) begin
         if (instruction_decode_in)
             pc_high_byte <= db_in;
+        else if (push_vector)
+            pc_high_byte <= 8'hff;
         else if (carry_to_pch) begin
             pc_high_byte <= pc_high_byte + 1;
             carry_done <= 1; 
@@ -76,7 +79,7 @@ module PCH(
     end
     end
     
-    assign address_out = pc_high_byte;
+    assign address_high_out = pc_high_byte;
     assign db_out = pc_high_byte;
     
 endmodule
