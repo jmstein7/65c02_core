@@ -45,6 +45,7 @@
 
 module index_register_Y(
     
+    input logic fclk,
     input logic instruction_decode_in,
     input logic rwb,
     input logic [7:0] db_in,
@@ -58,12 +59,14 @@ module index_register_Y(
     logic [7:0] y_register;
     
     always_latch begin
+    if (fclk) begin
         if (instruction_decode_in)
             y_register <= db_in;
         else if (y_increment)
             y_register <= y_register + 1;
         else if (y_decrement)
             y_register <= y_register - 1;
+    end
     end
     
     assign address_out = y_register;

@@ -49,7 +49,8 @@ module clocking_unit(
     output logic phi2o,
     output logic phi2_out,
     output logic mem_clk,
-    output logic fclk //4x phi2
+    output logic fclk, //4x phi2
+    output logic sfclk
     );
     
     logic at_speed = 0; 
@@ -78,6 +79,7 @@ module clocking_unit(
     .phi2(phi2_out),     // output phi2
     .fclk(fclk),     // output fclk
     .mem_clk(mem_clk),
+    .sfclk(sfclk),
     // Status and control signals
     .reset(reset), // input reset
     .locked(),       // output locked

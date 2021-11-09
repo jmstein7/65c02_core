@@ -65,6 +65,7 @@ module JM65C02S(
     logic [15:0] address; 
     logic clock_running;
     logic mem_clk;
+    logic [3:0] r_count;
     logic id_phi2_out;
     logic id_rwb_out;
     logic acc_to_alu_xfer;
@@ -85,6 +86,10 @@ module JM65C02S(
     logic swap_a_b;
     logic swap_b_c;
     logic [3:0] operation_select;
+    logic phi2_to_tc;
+    logic fclk;
+    logic sfclk;
+    logic [1:0] q;
     /*--------------------------*/
     /* MASTER ADDRESS BUS SETUP */
     /*--------------------------*/
@@ -107,7 +112,9 @@ module JM65C02S(
     
     address_bus address_bus_a(
     .full_address_output(address),
+    .fclk(fclk),
     .phi2(id_phi2_out),
+    .q(q),
     .rwb(id_rwb_out),
     .be(be),
     .hmode_select(hmode_select),
@@ -221,7 +228,6 @@ module JM65C02S(
     logic [7:0] psr_to_id;
     logic [7:0] ir_to_id;
     logic increment_pc;
-    logic [1:0] q;
     logic p;
     logic fclk_out;
     logic a_increment;
@@ -241,6 +247,7 @@ module JM65C02S(
     .nmib(int_nmib_to_id),
     .p(p),
     .q(q),
+    .r(r_count),
     .fclk(fclk_out),
     .mem_clk(mem_clk),
     .increment_pc(increment_pc),
@@ -310,8 +317,6 @@ interrupt_logic int_logic(
     /* Clock Generator and oscillator    */
     /*-----------------------------------*/
     //Internal Signals
-    logic phi2_to_tc;
-    logic fclk;
     
 clocking_unit clock_gen_one(
     .clk(clk),
@@ -321,6 +326,7 @@ clocking_unit clock_gen_one(
     .phi2o(phi2o),
     .phi2_out(phi2_to_tc),
     .fclk(fclk),
+    .sfclk(sfclk),
     .mem_clk(mem_clk)
     );
 
@@ -330,13 +336,16 @@ clocking_unit clock_gen_one(
     //Internal Signals
     
 timing_control tc_unit(
+    .reset(~resb),
     .tc_to_id(tc_to_id),
     .cg_to_tc(fclk),
     .phi2_in(phi2_to_tc),
     .phi2_out(tc_phi2_to_id),
     .p(p),
     .q(q),
+    .r(r_count),
     .fclk(fclk),
+    .sfclk(sfclk),
     .fclk_out(fclk_out)
     );
 
@@ -362,6 +371,7 @@ instruction_register ir_unit(
     ALU ALU_one(
     
     .compute_step(compute_step),
+    .fclk(fclk),
     .mem_clk(mem_clk),
     .resb(int_resb_to_id),
     .instruction_decode_in(id_to_alu),
@@ -400,6 +410,7 @@ instruction_register ir_unit(
 accumulator_A accumulator_one(
 
     .instruction_decode_in(id_to_accum),
+    .fclk(fclk),
     .rwb(id_rwb_out),
     .db_in(dbus_to_accumulator),
     .db_out(accumulator_to_dbus),
@@ -419,6 +430,7 @@ processor_stat_reg PSR_one(
     
     .sob(sob),
     .phi2(id_phi2_out),
+    .fclk(fclk),
     .id_flag(id_flag),
     .c_carry(c_carry),
     .d_decimal(d_decimal),
@@ -442,7 +454,8 @@ processor_stat_reg PSR_one(
     logic carry_to_pch;
     
 PCL pcl_one(
-
+    
+    .fclk(fclk),
     .instruction_decode_in(id_to_pcl),
     .increment_pc(increment_pc),
     .carry_to_pch(carry_to_pch),
@@ -454,7 +467,8 @@ PCL pcl_one(
     );
 
 PCH pch_one(
-
+    
+    .fclk(fclk),
     .instruction_decode_in(id_to_pch),
     .carry_to_pch(carry_to_pch),
     .db_in(dbus_to_pch),
@@ -472,6 +486,7 @@ PCH pch_one(
     //Internal Signals 
  index_register_X x_reg(
     
+    .fclk(fclk),
     .instruction_decode_in(id_to_x),
     .rwb(id_rwb_out),
     .db_in(dbus_to_x),
@@ -483,6 +498,7 @@ PCH pch_one(
  
  index_register_Y y_reg(
     
+    .fclk(fclk),
     .instruction_decode_in(id_to_y),
     .rwb(id_rwb_out),
     .db_in(dbus_to_y),
@@ -499,6 +515,8 @@ PCH pch_one(
     /*----------------------------*/
     //Internal Signals 
 Input_Data_Latch input_d_latch(
+
+    .fclk(fclk),
     .instruction_decode_in(id_to_idl),
     .clear(idl_clear),
     .rwb(id_rwb_out),
@@ -517,7 +535,8 @@ Input_Data_Latch input_d_latch(
 data_bus_buffer dbus_buffer(
     
     .instruction_decode_in(id_to_dbus_buff),
-
+    
+    .fclk(fclk),
     .be(be),
     .phi2(id_phi2_out),
     .rwb(rwb),
@@ -539,6 +558,8 @@ data_bus_buffer dbus_buffer(
     /*----------------------------*/
     //Internal Signals  
 stack_point_register stack_pointer(
+
+    .fclk(fclk),
     .instruction_decode_in(id_to_sp),
     .db_in(dbus_to_sp),
     .db_out(sp_to_dbus),

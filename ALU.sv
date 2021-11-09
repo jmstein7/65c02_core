@@ -49,6 +49,7 @@
 
 module ALU(
     input logic compute_step,
+    input logic fclk,
     input logic mem_clk,
     input logic resb,
     input logic instruction_decode_in,
@@ -110,20 +111,22 @@ module ALU(
     
      /* Main ALU Sequence */
     always_latch begin
+    if (fclk) begin
     
         if (instruction_decode_in) begin
             b_register <= db_in;
             
         end
-        else if (acc_to_alu_xfer) begin
+        if (acc_to_alu_xfer) begin
             a_register <= accumulator_in;
             
         end
-        else if (addr_to_alu_xfer) begin
+        if (addr_to_alu_xfer) begin
             c_register <= address_in;
             
         end
-        else if (swap_a_b) begin
+        
+        if (swap_a_b) begin
             a_register <= b_register;
             b_register <= a_register;
         end
@@ -261,6 +264,7 @@ module ALU(
             
     /* End Compute Sequences */
         end
+   end
    end 
    
     assign address_out = c_register;

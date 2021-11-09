@@ -45,6 +45,7 @@
 
 module index_register_X(
     
+    input logic fclk,
     input logic instruction_decode_in,
     input logic rwb,
     input logic [7:0] db_in,
@@ -58,12 +59,14 @@ module index_register_X(
     logic [7:0] x_register;
     
     always_latch begin
+    if (fclk) begin
         if (instruction_decode_in)
             x_register <= db_in;
         else if (x_increment)
             x_register <= x_register + 1;
         else if (x_decrement)
             x_register <= x_register - 1;
+    end
     end
     
     assign address_out = x_register;

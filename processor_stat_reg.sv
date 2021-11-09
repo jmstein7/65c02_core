@@ -49,6 +49,7 @@ module processor_stat_reg(
     input logic psr_xfer,
     input logic sob,
     input logic phi2,
+    input logic fclk,
     
     output logic c_carry,
     output logic d_decimal,
@@ -78,6 +79,7 @@ module processor_stat_reg(
     //assign p_status_register = {n,v,x,b,d,i,z,c};
     
     always_latch begin
+    if (fclk) begin
         if (id_flag)
             p_status_register <= db_in;
         else if (psr_xfer)
@@ -93,6 +95,7 @@ module processor_stat_reg(
             
         if (sob && phi2)
             p_status_register <= {n,1'b1,X,b,d,i,z,c};
+    end
     end
     
     assign c_carry = c; 

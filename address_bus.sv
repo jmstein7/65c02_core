@@ -44,6 +44,8 @@
 
 module address_bus(
     input logic phi2,
+    input logic [1:0] q,
+    input logic fclk,
     input logic rwb,
     input logic be,
     input logic [2:0] hmode_select,
@@ -75,10 +77,12 @@ module address_bus(
     logic [7:0] low_byte;
     
     always_latch begin
+    if (~fclk && (q == 3)) begin
         if (~be)
             full_address_output <= 'bZ;
-        else if (be && ~phi2)
+        else if (be)
             full_address_output <= {high_byte, low_byte};
+    end
     end
     
     assign high_byte = (hmode_select == 3'b010) ? 8'h01 : 

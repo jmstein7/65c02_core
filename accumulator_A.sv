@@ -46,6 +46,7 @@
 module accumulator_A(
 
     input logic instruction_decode_in,
+    input logic fclk,
     input logic rwb,
     input logic [7:0] db_in,
     output logic [7:0] db_out,
@@ -61,6 +62,7 @@ module accumulator_A(
     logic [7:0] accumulator;
     
     always_latch begin
+    if (fclk) begin
         if (instruction_decode_in)
             accumulator <= db_in;
         else if (alu_to_accumulator_xfer)
@@ -69,6 +71,7 @@ module accumulator_A(
             accumulator <= accumulator + 1;
         else if (a_decrement)
             accumulator <= accumulator - 1;
+    end
     end
     
     assign db_out = accumulator;

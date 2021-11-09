@@ -44,11 +44,14 @@
 
 
 module timing_control(
+    input logic reset,
     output logic tc_to_id,
     input cg_to_tc,
     input logic phi2_in,
     output logic phi2_out,
     input logic fclk,
+    input logic sfclk,
+    output logic [3:0] r,
     output logic [1:0] q,
     output logic p,
     output logic fclk_out
@@ -56,10 +59,12 @@ module timing_control(
     
     logic [1:0] q_step = 0;
     logic p_step = 0; 
+    logic [3:0] r_step = 4'b0010;
     
     assign phi2_out = phi2_in;
     assign q = q_step;
     assign p = p_step;
+    assign r = r_step;
     assign fclk_out = fclk;
     
     always @(posedge fclk) begin
@@ -68,6 +73,16 @@ module timing_control(
         else if (q_step == 2'b01)
             p_step <= 1; 
         q_step <= q_step + 2'b01;
+        if (reset) begin
+            q_step <= 0;
+            p_step <= 0; 
+        end
     end
+    
+    always @(posedge sfclk) begin
+        r_step <= r_step + 4'b0001;
+        if (reset)
+            r_step <= 4'b0001;
+    end 
     
 endmodule

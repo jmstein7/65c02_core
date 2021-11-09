@@ -48,6 +48,7 @@ module data_bus_buffer(
     input logic instruction_decode_in,
 
     input logic be,
+    input logic fclk,
     input logic phi2,
     input logic rwb,
     
@@ -65,10 +66,12 @@ module data_bus_buffer(
     assign put_byte = (~rwb); 
     
     always_latch begin
+    if (fclk) begin
         if (fetch_byte && instruction_decode_in)
             data_buffer <= data_in;
         else if (put_byte && instruction_decode_in)
             data_buffer <= db_in;
+    end
     end
     
     assign db_out = data_buffer;

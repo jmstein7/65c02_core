@@ -54,8 +54,13 @@ module processor_wrapper(
     
     wire [7:0] data_io;
     wire [15:0] a;
+    wire we;
      
     assign resb = ~reset;
+    assign we = ~rwb;
+    
+    wire [7:0] d;
+    wire [7:0] spo;
     
     /* System Verilog Processor Instance */
     JM65C02S processor_one(
@@ -78,7 +83,17 @@ module processor_wrapper(
     /* Data and Address Busses */
     .a(a),
     .data_io(data_io) 
-    
     );
+    
+    assign data_io = (rwb) ? spo : 'bZ;
+    assign d = (~rwb) ? data_io : 'bZ; 
+    
+    dist_mem_gen_0 dummy_ram (
+  .a(a[13:0]),      // input wire [13 : 0] a
+  .d(d),      // input wire [7 : 0] d
+  .clk(phi2o),  // input wire clk
+  .we(we),    // input wire we
+  .spo(spo)  // output wire [7 : 0] spo
+);
     
 endmodule
