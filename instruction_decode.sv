@@ -121,6 +121,7 @@ module instruction_decode(
     logic [4:0] start_nmib = 5'b10100;
     logic [4:0] start_irqb = 5'b10010;
     logic [4:0] start_stack = 5'b00001;
+    logic [4:0] start_null = 5'b00000;
     
     /* Status Flags */
     logic [7:0] status_flags;
@@ -261,9 +262,9 @@ module instruction_decode(
     
         {vpb, sync, mlb, rwb} <= signal_set; //4-bits
         
-        {read, write} <= data_bus_set; //8-bits
+        {read, write} <= data_bus_set; //8-bit mux
         
-        {hmode_select, lmode_select} <= address_bus_set; //6-bits
+        {hmode_select, lmode_select} <= address_bus_set; //6-bit mux
         
         {compute_step, ir_signal, id_flag, y, x, s, alu, accumulator, pcl, pch, input_DL,
         data_bus_buffer, psr_xfer, alu_to_accumulator_xfer, acc_to_alu_xfer,
@@ -280,5 +281,20 @@ module instruction_decode(
         {push_vector, push_resb, push_nmib, push_irqb, reset_stack} <= vector_operations; //5-bits
         
     end
+    
+    microcode_test test_code_unit_a(
+    
+    .fclk(fclk),
+    .clock_running(clock_running),
+    .signal_set(signal_set),
+    .data_bus_set(data_bus_set),
+    .address_bus_set(address_bus_set),
+    .load_store_execute(load_store_execute),
+    .alu_operations_regs(alu_operations_regs),
+    .inc_dec_clr(inc_dec_clr),
+    .status_flags(status_flags),
+    .vector_operations(vector_operations)
+    
+    );
        
 endmodule
