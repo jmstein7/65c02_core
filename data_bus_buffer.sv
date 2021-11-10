@@ -67,12 +67,12 @@ module data_bus_buffer(
     
     always_latch begin
     
-    if (fclk) begin
+
         if (fetch_byte && instruction_decode_in)
             data_buffer <= data_in;
         else if (put_byte && instruction_decode_in)
             data_buffer <= db_in;
-    end
+
     
     end
     

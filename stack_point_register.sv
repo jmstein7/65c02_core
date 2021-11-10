@@ -60,7 +60,7 @@ module stack_point_register(
     logic [7:0] stack_pointer;
     
     always_latch begin
-    if (fclk) begin
+
         if (instruction_decode_in)
             stack_pointer <= db_in;
         else if (reset_stack)
@@ -69,7 +69,7 @@ module stack_point_register(
             stack_pointer <= stack_pointer + 1;
         else if (sp_decrement)
             stack_pointer <= stack_pointer - 1;
-    end
+
     end
     
     assign db_out = stack_pointer;

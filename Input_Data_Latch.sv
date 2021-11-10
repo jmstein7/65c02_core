@@ -65,7 +65,7 @@ module Input_Data_Latch(
     
     always_latch begin
     
-    if (fclk) begin
+
         if (instruction_decode_in && ~little_endian) begin
             input_data_latch_low <= db_in;
             little_endian <= little_endian + 1;
@@ -79,7 +79,7 @@ module Input_Data_Latch(
             input_data_latch_low <= 0;
             little_endian <= 0;
         end
-    end
+
     
     end
     

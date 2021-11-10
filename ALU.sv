@@ -111,7 +111,7 @@ module ALU(
     
      /* Main ALU Sequence */
     always_latch begin
-    if (fclk) begin
+ 
     
         if (instruction_decode_in) begin
             b_register <= db_in;
@@ -264,7 +264,7 @@ module ALU(
             
     /* End Compute Sequences */
         end
-   end
+
    end 
    
     assign address_out = c_register;

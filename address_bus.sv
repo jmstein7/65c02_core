@@ -77,7 +77,7 @@ module address_bus(
     logic [7:0] low_byte;
     
     always_latch begin
-    if (~fclk && (q == 3)) begin
+    if (fclk && (q == 0)) begin
         if (~be)
             full_address_output <= 'bZ;
         else if (be)

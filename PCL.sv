@@ -67,7 +67,7 @@ module PCL(
     logic [7:0] pc_low_byte;
     
     always_latch begin
-    if (fclk) begin
+
         if (instruction_decode_in)
             pc_low_byte <= db_in;
         
@@ -90,7 +90,7 @@ module PCL(
         
         else if (carry_done)
             carry_to_pch <= 1'b0;
-    end
+
     end
     
     assign address_low_out = pc_low_byte;

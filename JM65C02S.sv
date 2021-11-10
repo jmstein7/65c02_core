@@ -118,7 +118,7 @@ module JM65C02S(
     address_bus address_bus_a(
     .full_address_output(address),
     .fclk(fclk),
-    .phi2(id_phi2_out),
+    .phi2(phi2_to_tc),
     .q(q),
     .rwb(id_rwb_out),
     .be(be),
@@ -174,7 +174,7 @@ module JM65C02S(
     
     data_bus data_bus_a(
 
-    .phi2(id_phi2_out),
+    .phi2(phi2_to_tc),
     .rwb(id_rwb_out),
     .read(dbus_read),
     .write(dbus_write),
@@ -253,7 +253,7 @@ module JM65C02S(
     .p(p),
     .q(q),
     .r(r_count),
-    .fclk(fclk_out),
+    .fclk(fclk),
     .mem_clk(mem_clk),
     .increment_pc(increment_pc),
     .read(dbus_read),
@@ -281,7 +281,7 @@ module JM65C02S(
     .vpb(vpb),
     .sync(sync),
     .mlb(mlb),
-    .phi2(tc_phi2_to_id),
+    .phi2(phi2_to_tc),
     .ir_signal(ir_signal),
     .id_flag(id_flag),
     .y(id_to_y),
@@ -329,37 +329,70 @@ interrupt_logic int_logic(
     /*-----------------------------------*/
     //Internal Signals
     
-clocking_unit clock_gen_one(
-    .clk(clk),
-    .clock_running(clock_running),
-    .reset(~resb),
-    .phi1o(phi1o),
-    .phi2o(phi2o),
-    .phi2_out(phi2_to_tc),
-    .fclk(fclk),
+    logic at_speed = 0; 
+    logic [1:0] start_clock = 0;
+    
+    assign phi2o = phi2_to_tc;
+    assign phi1o = ~phi2_to_tc;
+    assign clock_running = at_speed;
+    
+    always @(posedge phi2o) begin
+        if (start_clock < 2'b10) begin
+            at_speed <= 0;
+            start_clock <= start_clock +1;
+        end
+        else if (start_clock == 2'b10) begin
+            start_clock <= start_clock +1;
+            at_speed <= 1;
+        end
+        else if (start_clock == 2'b11)
+            start_clock <= 2'b11;
+    end
+    
+      clk_wiz_0 main_clock
+   (
+    // Clock out ports
+    .phi2(phi2_to_tc),     // output phi2
+    .fclk(fclk),     // output fclk
+    .mem_clk(mem_clk),
     .sfclk(sfclk),
-    .mem_clk(mem_clk)
-    );
-
+    // Status and control signals
+    .reset(~resb), // input reset
+    .locked(),       // output locked
+   // Clock in ports
+    .clk(clk));      // input clk
     /*-----------------------------------*/
     /* Timing Control Unit               */
     /*-----------------------------------*/
     //Internal Signals
     
-timing_control tc_unit(
-    .reset(~resb),
-    .tc_to_id(tc_to_id),
-    .cg_to_tc(fclk),
-    .phi2_in(phi2_to_tc),
-    .phi2_out(tc_phi2_to_id),
-    .p(p),
-    .q(q),
-    .r(r_count),
-    .fclk(fclk),
-    .sfclk(sfclk),
-    .fclk_out(fclk_out)
-    );
-
+    logic [1:0] q_step = 0;
+    logic p_step = 0; 
+    logic [3:0] r_step = 4'b0010;
+    
+    assign tc_phi2_to_id = phi2_to_tc;
+    assign q = q_step;
+    assign p = p_step;
+    assign r_count = r_step;
+    assign fclk_out = fclk;
+    
+    always @(posedge fclk) begin
+        if (q_step == 2'b11)
+            p_step <= 0;
+        else if (q_step == 2'b01)
+            p_step <= 1; 
+        q_step <= q_step + 2'b01;
+        if (~resb) begin
+            q_step <= 0;
+            p_step <= 0; 
+        end
+    end
+    
+    always @(posedge sfclk) begin
+        r_step <= r_step + 4'b0001;
+        if (~resb)
+            r_step <= 4'b0001;
+    end 
     /*-----------------------------------*/
     /* Instruction Register              */
     /*-----------------------------------*/
@@ -370,7 +403,7 @@ instruction_register ir_unit(
     .ir_signal(ir_signal),
     .instruction_decode_out(ir_to_id),
     .data_in(data_io_in),
-    .phi2(id_phi2_out)
+    .phi2(phi2_to_tc)
     );
     
     /*-----------------------------------*/
@@ -441,7 +474,7 @@ accumulator_A accumulator_one(
 processor_stat_reg PSR_one(
     
     .sob(sob),
-    .phi2(id_phi2_out),
+    .phi2(phi2_to_tc),
     .fclk(fclk),
     .id_flag(id_flag),
     .c_carry(c_carry),
@@ -554,7 +587,7 @@ data_bus_buffer dbus_buffer(
     
     .fclk(fclk),
     .be(be),
-    .phi2(id_phi2_out),
+    .phi2(phi2_to_tc),
     .rwb(rwb),
     
     .db_in(dbus_to_dbuff),

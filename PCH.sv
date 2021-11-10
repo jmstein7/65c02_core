@@ -65,7 +65,7 @@ module PCH(
     logic [7:0] pc_high_byte;
     
     always_latch begin
-    if (fclk) begin
+  
         if (instruction_decode_in)
             pc_high_byte <= db_in;
         else if (push_vector)
@@ -76,7 +76,7 @@ module PCH(
         end
         else if (~carry_to_pch)
             carry_done <= 0; 
-    end
+
     end
     
     assign address_high_out = pc_high_byte;

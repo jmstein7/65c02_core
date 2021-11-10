@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="153680724fs"></ZoomStartTime>
-      <ZoomEndTime time="154449725fs"></ZoomEndTime>
-      <Cursor1Time time="152395000fs"></Cursor1Time>
+      <ZoomStartTime time="18352500fs"></ZoomStartTime>
+      <ZoomEndTime time="19129501fs"></ZoomEndTime>
+      <Cursor1Time time="18805500fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="248"></NameColumnWidth>
+      <NameColumnWidth column_width="240"></NameColumnWidth>
       <ValueColumnWidth column_width="58"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="66" />
+   <WVObjectSize size="71" />
    <wvobject fp_name="/processor_wrapper/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -64,9 +64,29 @@
       <obj_property name="ElementShortName">be</obj_property>
       <obj_property name="ObjectShortName">be</obj_property>
    </wvobject>
+   <wvobject fp_name="/processor_wrapper/rwb" type="logic">
+      <obj_property name="ElementShortName">rwb</obj_property>
+      <obj_property name="ObjectShortName">rwb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/address_bus_a/full_address_output" type="array">
+      <obj_property name="ElementShortName">full_address_output[15:0]</obj_property>
+      <obj_property name="ObjectShortName">full_address_output[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/pcl_one/pc_low_byte" type="array">
+      <obj_property name="ElementShortName">pc_low_byte[7:0]</obj_property>
+      <obj_property name="ObjectShortName">pc_low_byte[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/stack_pointer/stack_pointer" type="array">
+      <obj_property name="ElementShortName">stack_pointer[7:0]</obj_property>
+      <obj_property name="ObjectShortName">stack_pointer[7:0]</obj_property>
+   </wvobject>
    <wvobject fp_name="/processor_wrapper/processor_one/id_a/increment_pc" type="logic">
       <obj_property name="ElementShortName">increment_pc</obj_property>
       <obj_property name="ObjectShortName">increment_pc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/sp_decrement" type="logic">
+      <obj_property name="ElementShortName">sp_decrement</obj_property>
+      <obj_property name="ObjectShortName">sp_decrement</obj_property>
    </wvobject>
    <wvobject fp_name="/processor_wrapper/processor_one/id_a/push_vector" type="logic">
       <obj_property name="ElementShortName">push_vector</obj_property>
@@ -131,6 +151,10 @@
    <wvobject fp_name="/processor_wrapper/processor_one/id_a/timing_control" type="logic">
       <obj_property name="ElementShortName">timing_control</obj_property>
       <obj_property name="ObjectShortName">timing_control</obj_property>
+   </wvobject>
+   <wvobject fp_name="/processor_wrapper/processor_one/id_a/test_code_unit_a/step_count" type="array">
+      <obj_property name="ElementShortName">step_count[3:0]</obj_property>
+      <obj_property name="ObjectShortName">step_count[3:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/processor_wrapper/processor_one/id_a/phi2" type="logic">
       <obj_property name="ElementShortName">phi2</obj_property>
@@ -211,10 +235,6 @@
    <wvobject fp_name="/processor_wrapper/processor_one/id_a/sp_increment" type="logic">
       <obj_property name="ElementShortName">sp_increment</obj_property>
       <obj_property name="ObjectShortName">sp_increment</obj_property>
-   </wvobject>
-   <wvobject fp_name="/processor_wrapper/processor_one/id_a/sp_decrement" type="logic">
-      <obj_property name="ElementShortName">sp_decrement</obj_property>
-      <obj_property name="ObjectShortName">sp_decrement</obj_property>
    </wvobject>
    <wvobject fp_name="/processor_wrapper/processor_one/id_a/alu_to_accumulator_xfer" type="logic">
       <obj_property name="ElementShortName">alu_to_accumulator_xfer</obj_property>

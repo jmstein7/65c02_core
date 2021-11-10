@@ -81,10 +81,8 @@ module processor_stat_reg(
     always_latch begin
     
     if (sob && ~fclk)
-            p_status_register <= {n,1'b1,X,b,d,i,z,c};
-            
-    if (fclk) begin
-            
+            p_status_register <= {n,1'b1,X,b,d,i,z,c};         
+   
         if (id_flag)
             p_status_register <= db_in;
             
@@ -99,8 +97,6 @@ module processor_stat_reg(
         else if (~psr_update_request)
             ack_update_request <= 0;
             
-    end
-    
     end
     
     assign c_carry = c; 
