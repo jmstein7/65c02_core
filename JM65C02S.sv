@@ -95,6 +95,7 @@ module JM65C02S(
     logic push_nmib;
     logic push_irqb;
     logic reset_stack;
+    logic adb_to_pc;
     /*--------------------------*/
     /* MASTER ADDRESS BUS SETUP */
     /*--------------------------*/
@@ -276,6 +277,7 @@ module JM65C02S(
     .acc_to_alu_xfer(acc_to_alu_xfer),
     .addr_to_alu_xfer(addr_to_alu_xfer),
     .psr_xfer(psr_xfer),
+    .adb_to_pc(adb_to_pc),
     
     .rdy(rdy),
     .vpb(vpb),
@@ -504,6 +506,7 @@ PCL pcl_one(
     .instruction_decode_in(id_to_pcl),
     .increment_pc(increment_pc),
     .carry_to_pch(carry_to_pch),
+    .adb_to_pc(adb_to_pc),
     .db_in(dbus_to_pcl),
     .db_out(pcl_to_dbus),
     .address_low_in(abus_to_pcl),
@@ -519,6 +522,7 @@ PCH pch_one(
     .fclk(fclk),
     .instruction_decode_in(id_to_pch),
     .carry_to_pch(carry_to_pch),
+    .adb_to_pc(adb_to_pc),
     .push_vector(push_vector),
     .db_in(dbus_to_pch),
     .db_out(pch_to_dbus),

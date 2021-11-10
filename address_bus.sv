@@ -97,8 +97,8 @@ module address_bus(
     (lmode_select == 3'b101) ? PCL_in : 'bZ;
     
     /* send values to units that can read these bytes */
-    assign alu_out = low_byte;
-    assign PCL_out = low_byte;
-    assign PCH_out = high_byte;
+    assign alu_out = full_address_output[7:0];
+    assign PCL_out = full_address_output[7:0];
+    assign PCH_out = full_address_output[15:8];
     
 endmodule

@@ -54,6 +54,7 @@ module PCL(
     input logic push_resb,
     input logic push_nmib,
     input logic push_irqb,
+    input logic adb_to_pc,
     
     input logic [7:0] db_in,
     output logic [7:0] db_out,
@@ -79,6 +80,9 @@ module PCL(
             
         else if (push_nmib)
             pc_low_byte <= 8'hFA;
+            
+        else if (adb_to_pc)
+            pc_low_byte <= address_low_in;
         
         else if (increment_pc) begin
             if (pc_low_byte == 8'hff)

@@ -84,6 +84,7 @@ module instruction_decode(
     output logic alu_to_accumulator_xfer, //13
     output logic acc_to_alu_xfer,  //14
     output logic addr_to_alu_xfer, //15
+    output logic adb_to_pc,
     
     output logic increment_pc, //0
     output logic a_increment,  //1
@@ -162,6 +163,9 @@ module instruction_decode(
     logic [3:0] write_psr = 4'b1001;
     logic [3:0] write_bz = 4'b1010;
     /*-------------------------------*/
+    logic push_address_to_pc; //transfer address latch value to the program counter
+    logic push_adb_to_pc = 1'b1;
+    logic hold_adb = 1'b0;
     /*-------------------------------*/
     /* Address Bus Multiplexing */
     /* High Byte Select */
@@ -266,6 +270,8 @@ module instruction_decode(
         
         {hmode_select, lmode_select} <= address_bus_set; //6-bit mux
         
+        adb_to_pc <= push_address_to_pc; //1-bit push or hold
+        
         {compute_step, ir_signal, id_flag, y, x, s, alu, accumulator, pcl, pch, input_DL,
         data_bus_buffer, psr_xfer, alu_to_accumulator_xfer, acc_to_alu_xfer,
         addr_to_alu_xfer} <= load_store_execute; //16-bits
@@ -289,6 +295,7 @@ module instruction_decode(
     .signal_set(signal_set),
     .data_bus_set(data_bus_set),
     .address_bus_set(address_bus_set),
+    .adb_to_pc(push_address_to_pc),
     .load_store_execute(load_store_execute),
     .alu_operations_regs(alu_operations_regs),
     .inc_dec_clr(inc_dec_clr),

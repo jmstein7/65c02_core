@@ -51,6 +51,7 @@ module PCH(
     input logic instruction_decode_in,
     input logic carry_to_pch,
     input logic push_vector,
+    input logic adb_to_pc,
     
     input logic [7:0] db_in,
     output logic [7:0] db_out,
@@ -68,12 +69,18 @@ module PCH(
   
         if (instruction_decode_in)
             pc_high_byte <= db_in;
+            
+        else if (adb_to_pc)
+            pc_high_byte <= address_high_in;
+            
         else if (push_vector)
             pc_high_byte <= 8'hff;
+            
         else if (carry_to_pch) begin
             pc_high_byte <= pc_high_byte + 1;
             carry_done <= 1; 
         end
+        
         else if (~carry_to_pch)
             carry_done <= 0; 
 

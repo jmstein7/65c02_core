@@ -30,7 +30,8 @@ module microcode_test(
     output logic [5:0] alu_operations_regs,
     output logic [9:0] inc_dec_clr,
     output logic [7:0] status_flags,
-    output logic [4:0] vector_operations
+    output logic [4:0] vector_operations,
+    output logic adb_to_pc
     );
     
     logic [3:0] step_count = 4'b0000;
@@ -78,6 +79,9 @@ module microcode_test(
     logic [3:0] write_psr = 4'b1001;
     logic [3:0] write_bz = 4'b1010;
     /*-------------------------------*/
+    logic push_address_to_pc; //transfer address latch value to the program counter
+    logic push_adb_to_pc = 1'b1;
+    logic hold_adb = 1'b0;
     /*-------------------------------*/
     /* Address Bus Multiplexing */
     /* High Byte Select */
@@ -160,6 +164,8 @@ module microcode_test(
     logic [3:0] set_rwb = 4'b0001; //0
     logic [3:0] set_none = 4'b0001; //Null
     
+    assign adb_to_pc = push_address_to_pc; //transfer address latch value to the program counter
+    
     always @(posedge fclk) begin
         if (clock_running) begin
         
@@ -167,9 +173,10 @@ module microcode_test(
             signal_set <= set_rwb;
             data_bus_set <= {read_bz, write_bz};
             address_bus_set <= {addh_pcH, addl_pcL};
+            push_address_to_pc <= hold_adb;
             load_store_execute <= no_op_hold;
             alu_operations_regs <= {alu_reg_hold, null_a_b};
-            inc_dec_clr <= clear_idl;
+            inc_dec_clr <= no_change;
             status_flags <= null_flag;
             vector_operations <= start_null;
         end
@@ -178,6 +185,19 @@ module microcode_test(
             signal_set <= set_rwb;
             data_bus_set <= {read_bz, write_bz};
             address_bus_set <= {addh_pcH, addl_pcL};
+            push_address_to_pc <= hold_adb;
+            load_store_execute <= update_status;
+            alu_operations_regs <= {alu_reg_hold, null_a_b};
+            inc_dec_clr <= clear_idl;
+            status_flags <= null_flag;
+            vector_operations <= start_null;
+        end
+        
+        else if (step_count == 4'b0010) begin
+            signal_set <= set_rwb;
+            data_bus_set <= {read_bz, write_bz};
+            address_bus_set <= {addh_bz, addl_bz};
+            push_address_to_pc <= hold_adb;
             load_store_execute <= no_op_hold;
             alu_operations_regs <= {alu_reg_hold, null_a_b};
             inc_dec_clr <= no_change;
@@ -185,22 +205,12 @@ module microcode_test(
             vector_operations <= (start_reset | start_stack);
         end
         
-        else if (step_count == 4'b0010) begin
-            signal_set <= set_rwb;
-            data_bus_set <= {read_bz, write_bz};
-            address_bus_set <= {addh_pcH, addl_pcL};
-            load_store_execute <= (no_op_hold);
-            alu_operations_regs <= {alu_reg_hold, null_a_b};
-            inc_dec_clr <= (inc_pc | dec_sp);
-            status_flags <= null_flag;
-            vector_operations <= start_null;
-        end
-        
         else if (step_count == 4'b0011) begin
             signal_set <= set_rwb;
-            data_bus_set <= {read_pch, write_alu};
-            address_bus_set <= {addh_pcH, addl_pcL};
-            load_store_execute <= (no_op_hold);
+            data_bus_set <= {read_bz, write_bz};
+            address_bus_set <= {addh_bz, addl_bz};
+            push_address_to_pc <= hold_adb;
+            load_store_execute <= no_op_hold;
             alu_operations_regs <= {alu_reg_hold, null_a_b};
             inc_dec_clr <= no_change;
             status_flags <= null_flag;
@@ -209,31 +219,70 @@ module microcode_test(
         
         else if (step_count == 4'b0100) begin
             signal_set <= set_rwb;
-            data_bus_set <= {read_pch, write_alu};
-            address_bus_set <= {addh_pcH, addl_pcL};
-            load_store_execute <= no_op_hold;
-            alu_operations_regs <= {alu_reg_hold, null_a_b};
-            inc_dec_clr <= no_change;
-            status_flags <= null_flag;
-            vector_operations <= start_null;
-        end
-        
-        else if (step_count == 4'b0101) begin
-            signal_set <= set_rwb;
             data_bus_set <= {read_bz, write_bz};
-            address_bus_set <= {addh_pcH, addl_pcL};
-            load_store_execute <= (no_op_hold);
+            address_bus_set <= {addh_stack, addl_stack};
+            push_address_to_pc <= hold_adb;
+            load_store_execute <= no_op_hold;
             alu_operations_regs <= {alu_reg_hold, null_a_b};
             inc_dec_clr <= (inc_pc | dec_sp);
             status_flags <= null_flag;
             vector_operations <= start_null;
         end
         
+        else if (step_count == 4'b0101) begin
+            signal_set <= set_rwb;
+            data_bus_set <= {read_dbuff, write_a};
+            address_bus_set <= {addh_stack, addl_stack};
+            push_address_to_pc <= hold_adb;
+            load_store_execute <= (load_bus_buffer | load_a);
+            alu_operations_regs <= {alu_reg_hold, null_a_b};
+            inc_dec_clr <= no_change;
+            status_flags <= null_flag;
+            vector_operations <= start_null;
+        end
+        
         else if (step_count == 4'b0110) begin
             signal_set <= set_rwb;
-            data_bus_set <= {read_pch, write_alu};
+            data_bus_set <= {read_sp, write_pcl};
+            address_bus_set <= {addh_stack, addl_stack};
+            push_address_to_pc <= hold_adb;
+            load_store_execute <= (load_pcl);
+            alu_operations_regs <= {alu_reg_hold, null_a_b};
+            inc_dec_clr <= no_change;
+            status_flags <= null_flag;
+            vector_operations <= start_null;
+        end
+        
+        else if (step_count == 4'b0111) begin
+            signal_set <= set_rwb;
+            data_bus_set <= {read_dbuff, write_a};
             address_bus_set <= {addh_pcH, addl_pcL};
-            load_store_execute <= no_op_hold;
+            push_address_to_pc <= hold_adb; // OR could be push_adb_to_pc
+            load_store_execute <= (no_op_hold);
+            alu_operations_regs <= {alu_reg_hold, null_a_b};
+            inc_dec_clr <= no_change;
+            status_flags <= null_flag;
+            vector_operations <= start_null;
+        end
+        
+        else if (step_count == 4'b1000) begin
+            signal_set <= set_rwb;
+            data_bus_set <= {read_bz, write_bz};
+            address_bus_set <= {addh_bz, addl_bz};
+            push_address_to_pc <= push_adb_to_pc; // OR could be push_adb_to_pc
+            load_store_execute <= (no_op_hold);
+            alu_operations_regs <= {alu_reg_hold, null_a_b};
+            inc_dec_clr <= no_change;
+            status_flags <= null_flag;
+            vector_operations <= start_null;
+        end
+        
+        else if (step_count == 4'b1001) begin
+            signal_set <= set_rwb;
+            data_bus_set <= {read_bz, write_bz};
+            address_bus_set <= {addh_pcH, addl_pcL};
+            push_address_to_pc <= hold_adb; // OR could be push_adb_to_pc
+            load_store_execute <= (no_op_hold);
             alu_operations_regs <= {alu_reg_hold, null_a_b};
             inc_dec_clr <= no_change;
             status_flags <= null_flag;
